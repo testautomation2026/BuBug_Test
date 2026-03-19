@@ -1,13 +1,22 @@
-name: Test sito web
+name: Run BugBug Tests
 
-on: [push]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
 
 jobs:
-  test:
+  bugbug-tests:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Run BugBug test
-        uses: bugbug-io/bugbug-github-action@v1
-        with:
-          apiToken: ${{ secrets.bugbug_bd31005a713c5c08f63d7b212003209b38ef8b35 }}
-          testId: 4526ed39-eccc-4c6e-8de1-ac895c28c1f6
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Installa BugBug CLI
+        run: npm install -g bugbug-cli
+
+      - name: Esegui test BugBug
+        run: bugbug run
+        env:
+          BUGBUG_API_KEY: ${{ secrets.bugbug_bd31005a713c5c08f63d7b212003209b38ef8b35 }}
